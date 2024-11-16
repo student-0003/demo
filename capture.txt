@@ -1,0 +1,332 @@
+Counter.jsx
+
+import { useState } from "react";
+
+function Counter() {
+    const [count , setCount] = useState(0);
+
+    const increment = () => {
+        setCount(count + 1);
+    }
+
+    const decrement = () => {
+        setCount(count - 1);
+    }
+
+    return(
+        <>
+            <button onClick={decrement}>Decrement</button>
+            <h2>current count : {count}</h2>
+            <button onClick={increment}>Increment</button>
+        </>
+    )
+}
+
+export default Counter;
+
+Form.jsx
+
+import { useState } from "react";
+
+function Form(){
+    const [formData , setFormData] = useState({
+        fname : "",
+        age : 0
+    });
+
+    const handleChnage = (event) =>{
+        const {name,value} = event.target;
+        setFormData({
+            formData, [name]:value
+        });
+    };
+
+    const handlesubmit = (event) => {
+        event.preventDefault();
+        console.log("Successfull");
+        console.log(formData);
+    };
+
+    return (
+        <>
+            <form onSubmit={handlesubmit}>
+                <div>
+                    <label htmlFor="fname"> Name : </label>
+                    <input type="text" name="fname" value={formData.fname} onChange={handleChnage} required/>
+                </div>
+
+                <div>
+                    <label htmlFor="age"> Age : </label>
+                    <input type="text" name="age" value={formData.age} onChange={handleChnage} required/>
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
+        </>
+    )
+}
+
+export default Form;
+
+Greeting.jsx
+
+function Greeting({user}) {
+    return(
+        <>
+            <h2>Have a nice day, { user.name} ({user.age})</h2>
+        </>
+    )
+}
+
+export default Greeting;
+
+Massage.jsx
+
+function Message() {
+    
+    return(
+        <>
+            <div>
+                <h1>This is from message component</h1>
+            </div>
+        </>
+    )
+}
+
+export default Message
+
+App.jsx
+
+import { useReducer, useState } from 'react'
+import './App.css'
+import Greeting from './Greeting'
+import Counter from './Counter';
+import Form from './Form';
+
+function App() {
+
+  const name = "nadeeshana";
+
+  const userData = {
+    name : "nadeeshana",
+    age : 24
+  }
+
+  return (
+    <>
+      {/* <Greeting name = {name}/> */}
+      <Greeting user = {userData}/>
+
+      <Counter />
+
+      <Form />
+    </>
+  )
+}
+
+export default App
+
+-----------------------------------------------
+
+About.jsx
+
+const About = () => {
+    return (
+        <>
+            <h1>This is About page Content</h1>
+            <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis dolores, a, perspiciatis eaque fugit atque distinctio ducimus delectus placeat facilis similique, laboriosam quas minus illum tempora eius praesentium laudantium id.</h2>
+        </>
+    )
+};
+
+export default About;
+
+Home.jsx
+
+const Home = () => {
+    return (
+        <>
+            <h1>This is Home page Content</h1>
+            <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis dolores, a, perspiciatis eaque fugit atque distinctio ducimus delectus placeat facilis similique, laboriosam quas minus illum tempora eius praesentium laudantium id.</h2>
+        </>
+    )
+};
+
+export default Home;
+
+AppRoutes.jsx
+
+import { Routes, Route } from 'react-router-dom';
+import Home from '../Pages/Home';
+import About from '../Pages/About';
+
+const AppRouters = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+        </Routes>
+    );
+};
+
+export default AppRouters;
+
+npm install axios
+DataFetchingAndPosting.jsx
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+const DataFetchingAndPosting = () => {
+    const [data, setData] = useState([]);
+    const [newPost, setNewPost] = useState({
+        title: '',
+        body: '',
+        userId: 1
+    });
+    // GET request to fetch data
+    useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+    .then(response => setData(response.data))
+    .catch(error => console.error(error));
+    }, []);
+    // POST request to add new data
+    const handlePost = () => {
+    axios.post('https://jsonplaceholder.typicode.com/posts',newPost)
+    .then(response => {
+        console.log('New Post Added:', response.data);
+        setData([...data, response.data]);
+        })
+        .catch(error => console.error(error));
+    };
+    return (
+        <div>
+            <h3>Data Fetching (GET Request)</h3>
+                <ul>
+                    {data.map(post => <li key={post.id}>{post.title}</li>)}
+                </ul>
+            <h3>Add a New Post (POST Request)</h3>
+            <input
+            type="text"
+            placeholder="Title"
+            value={newPost.title}
+            onChange={e => setNewPost({ ...newPost, title:e.target.value })}
+        />
+        <input
+            type="text"
+            placeholder="Body"
+            value={newPost.body}
+            onChange={e => setNewPost({ ...newPost, body:e.target.value })}
+            />
+        <button onClick={handlePost}>Add Post</button>
+        </div>
+    );
+};
+export default DataFetchingAndPosting;
+
+App.jsx
+
+import DataFetchingAndPosting from './DataFetchingAndPosting';
+function App() {
+return (
+<>
+<DataFetchingAndPosting />
+</>
+);
+}
+export default App;
+
+DynamicList.jsx
+
+import { useState } from 'react';
+
+    const DynamicList = () => {
+    const [items, setItems] = useState([]);
+    const addItem = () => setItems([...items, `Item ${items.length + 1}`]);
+
+    return (
+        <div>
+            <button onClick={addItem}>Add Item</button>
+            <ul>
+                {items.map((item, index) => <li key={index}>{item}</li>)}
+            </ul>
+        </div>
+    );
+};
+
+export default DynamicList;
+
+ComponentNew.jsx
+
+import { useContext, useState } from 'react';
+import { MyContext } from './ContextProvider';
+
+const ComponentNew = () => {
+    const { sharedData, setSharedData } = useContext(MyContext);
+    
+    return (
+        <div>
+            <p>{sharedData}</p>
+            <button onClick={() => setSharedData("UpdatedData")}>Update</button>
+        </div>
+    );
+};
+
+export default ComponentNew;
+
+ContextProvider.jsx
+
+import { createContext ,useState } from "react";
+
+export const MyContext = createContext();
+
+const ContextProvider = ({ children }) => {
+    const [sharedData, setSharedData] = useState("Initial Data");
+        
+    return (
+        <MyContext.Provider value={{ sharedData, setSharedData }}>
+            {children}
+        </MyContext.Provider>
+    );
+ };
+
+export default ContextProvider;
+
+App.jsx
+
+import { useState } from 'react'
+import './App.css'
+
+import DynamicList from './DynamicList'
+import ComponentNew from './ComponentNew'
+import ContextProvider from './ContextProvider'
+
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import AppRouters from './Routers/AppRouters'
+
+function App() {
+
+  return (
+    <>
+
+      <DynamicList />
+
+      <ContextProvider>
+        <ComponentNew />
+      </ContextProvider>
+
+      <Router>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+          </nav>
+        <AppRouters />
+      </Router>
+    </>
+  )
+}
+
+export default App
+
+--------------------------------------------------
+
+

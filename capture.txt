@@ -1,4 +1,9 @@
-Counter.jsx
+npm create vite@latest
+npm install react-router-dom
+npm install bootstrap
+npm install react-bootstrap bootstrap
+
+*Counter.jsx
 
 import { useState } from "react";
 
@@ -24,7 +29,9 @@ function Counter() {
 
 export default Counter;
 
-Form.jsx
+-----------------------------------------
+
+*Form.jsx
 
 import { useState } from "react";
 
@@ -68,7 +75,9 @@ function Form(){
 
 export default Form;
 
-Greeting.jsx
+---------------------------------
+
+*Greeting.jsx
 
 function Greeting({user}) {
     return(
@@ -80,7 +89,9 @@ function Greeting({user}) {
 
 export default Greeting;
 
-Massage.jsx
+-----------------------------------
+
+*Massage.jsx
 
 function Message() {
     
@@ -95,7 +106,9 @@ function Message() {
 
 export default Message
 
-App.jsx
+-----------------------------------
+
+*App.jsx
 
 import { useReducer, useState } from 'react'
 import './App.css'
@@ -128,7 +141,8 @@ export default App
 
 -----------------------------------------------
 
-About.jsx
+*Pages
+*About.jsx
 
 const About = () => {
     return (
@@ -141,7 +155,10 @@ const About = () => {
 
 export default About;
 
-Home.jsx
+---------------------------------------
+
+Pages
+*Home.jsx
 
 const Home = () => {
     return (
@@ -154,7 +171,10 @@ const Home = () => {
 
 export default Home;
 
-AppRoutes.jsx
+----------------------------------
+
+Routers
+*AppRoutes.jsx
 
 import { Routes, Route } from 'react-router-dom';
 import Home from '../Pages/Home';
@@ -171,7 +191,109 @@ const AppRouters = () => {
 
 export default AppRouters;
 
-npm install axios
+----------------------------------------
+
+*DynamicList.jsx
+
+import { useState } from 'react';
+
+    const DynamicList = () => {
+    const [items, setItems] = useState([]);
+    const addItem = () => setItems([...items, `Item ${items.length + 1}`]);
+
+    return (
+        <div>
+            <button onClick={addItem}>Add Item</button>
+            <ul>
+                {items.map((item, index) => <li key={index}>{item}</li>)}
+            </ul>
+        </div>
+    );
+};
+
+export default DynamicList;
+
+-----------------------------------------
+
+*ComponentNew.jsx
+
+import { useContext, useState } from 'react';
+import { MyContext } from './ContextProvider';
+
+const ComponentNew = () => {
+    const { sharedData, setSharedData } = useContext(MyContext);
+    
+    return (
+        <div>
+            <p>{sharedData}</p>
+            <button onClick={() => setSharedData("UpdatedData")}>Update</button>
+        </div>
+    );
+};
+
+export default ComponentNew;
+
+---------------------------------------
+
+*ContextProvider.jsx
+
+import { createContext ,useState } from "react";
+
+export const MyContext = createContext();
+
+const ContextProvider = ({ children }) => {
+    const [sharedData, setSharedData] = useState("Initial Data");
+        
+    return (
+        <MyContext.Provider value={{ sharedData, setSharedData }}>
+            {children}
+        </MyContext.Provider>
+    );
+ };
+
+export default ContextProvider;
+
+----------------------------------------
+
+*App.jsx
+
+import { useState } from 'react'
+import './App.css'
+
+import DynamicList from './DynamicList'
+import ComponentNew from './ComponentNew'
+import ContextProvider from './ContextProvider'
+
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import AppRouters from './Routers/AppRouters'
+
+function App() {
+
+  return (
+    <>
+
+      <DynamicList />
+
+      <ContextProvider>
+        <ComponentNew />
+      </ContextProvider>
+
+      <Router>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+          </nav>
+        <AppRouters />
+      </Router>
+    </>
+  )
+}
+
+export default App
+
+--------------------------------------------------
+
+npm install *axios
 DataFetchingAndPosting.jsx
 
 import { useEffect, useState } from 'react';
@@ -223,7 +345,7 @@ const DataFetchingAndPosting = () => {
 };
 export default DataFetchingAndPosting;
 
-App.jsx
+*App.jsx
 
 import DataFetchingAndPosting from './DataFetchingAndPosting';
 function App() {
@@ -235,98 +357,318 @@ return (
 }
 export default App;
 
-DynamicList.jsx
+-----------------------------------
 
-import { useState } from 'react';
+*Footer.jsx
 
-    const DynamicList = () => {
-    const [items, setItems] = useState([]);
-    const addItem = () => setItems([...items, `Item ${items.length + 1}`]);
+import { Navbar, Container } from "react-bootstrap";
 
+const Footer = () => {
     return (
-        <div>
-            <button onClick={addItem}>Add Item</button>
-            <ul>
-                {items.map((item, index) => <li key={index}>{item}</li>)}
-            </ul>
-        </div>
+        <Navbar bg="dark" variant="dark" fixed="bottom">
+            <Container>
+                <p className="text-white">Copyright &copy; 2024 My E-commerce App</p>
+            </Container>
+        </Navbar>
     );
 };
 
-export default DynamicList;
+export default Footer;
 
-ComponentNew.jsx
+---------------------------------
 
-import { useContext, useState } from 'react';
-import { MyContext } from './ContextProvider';
+*Header.jsx
 
-const ComponentNew = () => {
-    const { sharedData, setSharedData } = useContext(MyContext);
-    
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
+const Header = () => {
     return (
-        <div>
-            <p>{sharedData}</p>
-            <button onClick={() => setSharedData("UpdatedData")}>Update</button>
-        </div>
+        <Navbar bg="dark" variant="dark" fixed='top'>
+            <Container>
+            <Navbar.Brand href="#home">My E-commerce App - Admin</Navbar.Brand>
+                <Nav>
+                    <Nav.Link as={Link} to="/">Products</Nav.Link>
+                    <Nav.Link as={Link} to="/about">About</Nav.Link>
+                    <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                </Nav>
+            </Container>
+        </Navbar>
     );
 };
 
-export default ComponentNew;
+export default Header;
 
-ContextProvider.jsx
+-------------------------------------
 
-import { createContext ,useState } from "react";
+*ProductCard.jsx
 
-export const MyContext = createContext();
+import Card from 'react-bootstrap/Card';
 
-const ContextProvider = ({ children }) => {
-    const [sharedData, setSharedData] = useState("Initial Data");
-        
+const ProductCard = ({ product }) => {
     return (
-        <MyContext.Provider value={{ sharedData, setSharedData }}>
-            {children}
-        </MyContext.Provider>
+    <Card>
+        <Card.Img variant="top" src={product.image} />
+        <Card.Body>
+            <Card.Title>{product.name}</Card.Title>
+            <Card.Text>{product.description}</Card.Text>
+            <Card.Text>${product.price}</Card.Text>
+        </Card.Body>
+    </Card>
     );
- };
+};
 
-export default ContextProvider;
+export default ProductCard;
 
-App.jsx
+----------------------------------------
 
-import { useState } from 'react'
-import './App.css'
+*ProductModal.jsx
 
-import DynamicList from './DynamicList'
-import ComponentNew from './ComponentNew'
-import ContextProvider from './ContextProvider'
+import { useState } from "react";
+import { Button, Modal, Form } from "react-bootstrap";
 
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import AppRouters from './Routers/AppRouters'
+const ProductModal = ({ show, onHide, onSubmit, initialProduct }) => {
+    const [formData, setFormData] = useState(
+        initialProduct || {
+            name: "",
+            description: "",
+            price: "",
+        }
+    );
 
-function App() {
+const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+};
 
-  return (
-    <>
+const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+    onHide();
+};
 
-      <DynamicList />
+return (
+    <Modal show={show} onHide={onHide}>
+        <Modal.Header closeButton>
+            <Modal.Title>
+                {initialProduct ? "Edit Product" : "Add Product"}
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="formProductName">
+                <Form.Label>Product Name</Form.Label>
+                <Form.Control
+                type="text"
+                placeholder="Enter product name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                />
+                </Form.Group>
+            </Form>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={onHide}>
+            Close
+            </Button>
+            <Button variant="primary" type="submit">
+                {initialProduct ? "Save Changes" : "Add Product"}
+            </Button>
+        </Modal.Footer>
+    </Modal>
+    );
+};
 
-      <ContextProvider>
-        <ComponentNew />
-      </ContextProvider>
+export default ProductModal;
 
-      <Router>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        <AppRouters />
-      </Router>
-    </>
-  )
+--------------------------------------------
+
+*AboutPage.jsx
+
+import Header from '../components/Organisms/Header';
+import Footer from '../components/Organisms/Footer';
+
+const AboutPage = () => {
+    return (
+        <>
+        <Header />
+        <div className="mx-5">
+            <h1>About Us</h1>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+            do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+            ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <p>
+            <strong>Our Mission:</strong> To provide high-quality
+            products and exceptional customer service.
+            </p>
+            <p>
+            <strong>Our Vision:</strong> To be the leading e-commerce
+            platform in the industry.
+            </p>
+        </div>
+        <Footer />
+        </>
+    );
+};
+
+export default AboutPage;
+
+-----------------------------------------
+
+*ContactPage.jsx
+
+import Footer from "../components/Organisms/Footer";
+import Header from "../components/Organisms/Header";
+
+const ContactPage =  () =>{
+    return(
+        <>
+            <Header />
+            <div className="mx-5">
+                <h1>Contact Us</h1>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+                <p>Phone : 07123456789</p>
+                <p>Email : example@gmail.com</p>
+            </div>
+            <Footer />
+        </>
+    )
 }
 
-export default App
+export default ContactPage;
 
---------------------------------------------------
+----------------------------------------------
 
+*HomePage.jsx
 
+import Header from "../components/Organisms/Header";
+import Footer from "../components/Organisms/Footer";
+import ProductCard from "../components/Molecules/ProductCard";
+import productsData from "./products.json";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
+import ProductModal from "../components/Molecules/ProductModal";
+
+const HomePage = () => {
+const [showProductModal, setShowProductModal] = useState(false);
+const [currentProduct, setCurrentProduct] = useState(null);
+
+const handleAddProduct = () => {
+    setCurrentProduct(null);
+    setShowProductModal(true);
+};
+
+const handleEditProduct = (product) => {
+    setCurrentProduct(product);
+    setShowProductModal(true);
+};
+
+const handleProductSubmit = (productData) => {
+    setShowProductModal(false);
+};
+
+    return (
+        <>
+        <Header />
+        <div className="mt-5">
+            <Button onClick={handleAddProduct}>Add Product</Button>
+            <ProductModal
+            show={showProductModal}
+            onHide={() => setShowProductModal(false)}
+            onSubmit={handleProductSubmit}
+            initialProduct={currentProduct}
+            />
+            <h1 className="text-center mt-4">All Products</h1>
+            <div className="row mb-3">
+                {productsData.map((product) => (
+                    <div className="col-md-3 mb-3" key={product.id}>
+                        <ProductCard product={product} />
+                        <Button onClick={() => handleEditProduct(product)} className="mt-2">
+                        Edit Product
+                        </Button>
+                    </div>
+                ))}
+            </div>
+        </div>
+        <Footer />
+        </>
+    );
+};
+
+export default HomePage;
+
+--------------------------------------
+
+*products.json
+
+[{
+        "id": 1,
+        "name": "Product 01",
+        "description": "This is Product description",
+        "price": 90,
+        "image": "/public/myimage.jpg"
+    },
+
+    {
+        "id": 2,
+        "name": "Product 02",
+        "description": "This is Product description",
+        "price": 90,
+        "image": "/public/myimage.jpg"
+    },
+
+    {
+        "id": 3,
+        "name": "Product 03",
+        "description": "This is Product description",
+        "price": 90,
+        "image": "/public/myimage.jpg"
+    },
+
+    {
+        "id": 4,
+        "name": "Product 04",
+        "description": "This is Product description",
+        "price": 90,
+        "image": "/public/myimage.jpg"
+    }
+]
+
+---------------------------------
+
+*App.jsx
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './Pages/HomePage';
+import AboutPage from './Pages/AboutPage';
+import ContactPage from './Pages/ContactPage';
+import "./App.css";
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
+    </Router>
+  );
+};
+export default App;
+
+--------------------------------------------
